@@ -6,6 +6,7 @@ import constants
 class Bullet(pygame.sprite.Sprite):
     image_src = constants.BULLET_IMG
     sound_src = constants.BULLET_SHOOT_SOUND
+    power = 1  # 子弹威力
 
     def __init__(self, screen, plane, step=10):
         super().__init__()
@@ -33,7 +34,7 @@ class Bullet(pygame.sprite.Sprite):
         else:
             self.rect.bottom = plane_rect.top
 
-    def update(self):
+    def update(self, war):
         """游戏循环"""
         # 子弹移动
         self.rect = self.rect.move(0, self.step)
@@ -43,6 +44,10 @@ class Bullet(pygame.sprite.Sprite):
         else:
             # 游戏渲染
             self.screen.blit(self.image, self.rect)
-
+        # 碰撞检测
+        targets = pygame.sprite.spritecollide(self, war.enemies, False)
+        for target in targets:
+            self.kill()  # 子弹消失
+            target.hurt(self.power)
 
 

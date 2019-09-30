@@ -27,3 +27,8 @@ class SmallEnemyPlane(Plane):
             self.init_rect()
         self.screen.blit(self.images[0], self.rect)
 
+    def destroy(self):
+        super().destroy()
+        self.active = True
+        self.init_rect()
+

@@ -80,6 +80,7 @@ class War(object):
             self.plane.update(self)
             # 敌机刷新
             self.enemies.update(self)
+            print(self.enemies)
             # 刷新界面
             pygame.display.flip()
 

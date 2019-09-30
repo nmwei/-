@@ -8,6 +8,8 @@ class Plane(pygame.sprite.Sprite):
     destroy_images_src = []
     # 摧毁音效
     destroy_sound_src = None
+    # 生命
+    life = 1
 
     def __init__(self, screen, speed=10):
         super().__init__()
@@ -29,11 +31,26 @@ class Plane(pygame.sprite.Sprite):
     def get_screen_size(self):
         return self.screen.get_size()
 
+    def hurt(self, power=1):
+        """ 被伤害 """
+        self.life -= power
+        if self.life <= 0:
+            self.destroy()
+
+    def destroy(self):
+        """ 坠机 """
+        self.active = False
+        sound = pygame.mixer.Sound(self.destroy_sound_src)
+        sound.play()
+        # 这里是多张爆炸图片在同一帧渲染
+        for image in self.destroy_images:
+            self.screen.blit(image, self.rect)
+
     def update(self, war):
         """游戏循环"""
         self.bind_event(war.down_key)  # 绑定事件
         self.render(war)  # 渲染视图
-        self.bullets.update()  # 更新子弹
+        self.bullets.update(war)  # 更新子弹
 
     def bind_event(self, down_key):
         """ 绑定事件 """
