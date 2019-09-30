@@ -33,6 +33,7 @@ class MyPlane(Plane):
             self.move_right()
 
     def render(self, war):
+        """ 渲染视图 """
         if war.times % 3 == 0:  # 添加子弹
             self.bullets.add(Bullet(self.screen, self, -20))
         if war.times % 5 == 0:  # 飞机喷气效果

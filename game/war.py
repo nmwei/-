@@ -1,5 +1,6 @@
 import sys, pygame
 import constants
+from game.enemey import SmallEnemyPlane
 from game.myplane import MyPlane
 
 
@@ -22,7 +23,7 @@ class War(object):
         # 我的飞机
         self.plane = MyPlane(self.screen)
         # 敌机
-        self.enemies = []
+        self.enemies = pygame.sprite.Group()
         # 计数器
         self.times = 0
         # 按下的键盘
@@ -35,7 +36,12 @@ class War(object):
         # 背景音乐
         self.start_music()
         # 循环渲染
-        self.loop()
+        self.update()
+
+    def add_small_enemy(self, num):
+        """ 添加小型敌机 """
+        for i in range(num):
+            self.enemies.add(SmallEnemyPlane(self.screen, 10))
 
     @staticmethod
     def start_music():
@@ -58,7 +64,7 @@ class War(object):
             elif event.type == pygame.KEYUP and event.key == self.down_key:
                 self.down_key = None
 
-    def loop(self):
+    def update(self):
         """ 游戏循环 """
         while True:
             # 设置动画帧数
@@ -73,6 +79,7 @@ class War(object):
             # 我的飞机刷新
             self.plane.update(self)
             # 敌机刷新
+            self.enemies.update(self)
             # 刷新界面
             pygame.display.flip()
 

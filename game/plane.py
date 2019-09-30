@@ -8,8 +8,6 @@ class Plane(pygame.sprite.Sprite):
     destroy_images_src = []
     # 摧毁音效
     destroy_sound_src = None
-    # 子弹
-    bullets = pygame.sprite.Group()
 
     def __init__(self, screen, speed=10):
         super().__init__()
@@ -23,6 +21,8 @@ class Plane(pygame.sprite.Sprite):
         self.images = list(map(lambda img: pygame.image.load(img), self.images_src))
         # 飞机摧毁图片对象
         self.destroy_images = list(map(lambda img: pygame.image.load(img), self.destroy_images_src))
+        # 初始化子弹
+        self.bullets = pygame.sprite.Group()
         # 初始化飞机位置
         self.rect = self.images[0].get_rect()
 
