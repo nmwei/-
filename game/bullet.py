@@ -48,6 +48,6 @@ class Bullet(pygame.sprite.Sprite):
         targets = pygame.sprite.spritecollide(self, war.enemies, False)
         for target in targets:
             self.kill()  # 子弹消失
-            target.hurt(self.power)
+            target.hurt(war, self.power)
 
 

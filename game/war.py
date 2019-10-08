@@ -15,19 +15,33 @@ class War(object):
     # clock对象
     clock = pygame.time.Clock()
 
+    @staticmethod
+    def start_music():
+        """ 背景音乐 """
+        pygame.mixer.music.load(constants.BG_MUSIC)
+        # 设置音量
+        pygame.mixer.music.set_volume(0.2)
+        # 循环播放
+        pygame.mixer.music.play(-1)
+
     def __init__(self, size=constants.SCREEN_SIZE):
         # 游戏状态
-        self.state = self.READY
+        self.state = self.PLAYING
         # 游戏界面
         self.screen = pygame.display.set_mode(size)
         # 我的飞机
-        self.plane = MyPlane(self.screen)
+        self.plane = MyPlane(self.screen, 20)
         # 敌机
         self.enemies = pygame.sprite.Group()
         # 计数器
         self.times = 0
         # 按下的键盘
         self.down_key = None
+        # 分数
+        self.score = 0
+
+    def add_score(self, count):
+        self.score += count
 
     def start(self):
         """ 开始游戏 """
@@ -43,15 +57,6 @@ class War(object):
         for i in range(num):
             self.enemies.add(SmallEnemyPlane(self.screen, 10))
 
-    @staticmethod
-    def start_music():
-        """ 背景音乐 """
-        pygame.mixer.music.load(constants.BG_MUSIC)
-        # 设置音量
-        pygame.mixer.music.set_volume(0.2)
-        # 循环播放
-        pygame.mixer.music.play(-1)
-
     def bind_event(self):
         """ 事件监听 """
         # 只在一处遍历pygame.event.get()
@@ -59,7 +64,7 @@ class War(object):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 self.down_key = event.key
             elif event.type == pygame.KEYUP and event.key == self.down_key:
                 self.down_key = None
@@ -69,18 +74,18 @@ class War(object):
         while True:
             # 设置动画帧数
             self.clock.tick(60)
-            # 先绑定事件再绘制视图
-            self.bind_event()
             # 更新计数器
             self.update_count()
-            # 每次循环都要重新添加事件监听
-            # 绘制背景图片
-            self.screen.blit(self.bg_img, self.screen.get_rect())
-            # 我的飞机刷新
-            self.plane.update(self)
-            # 敌机刷新
-            self.enemies.update(self)
-            print(self.enemies)
+            self.bind_event()
+            if self.state == self.PLAYING:
+                # 绘制背景图片
+                self.screen.blit(self.bg_img, self.screen.get_rect())
+                # 我的飞机刷新
+                self.plane.update(self)
+                # 敌机刷新
+                self.enemies.update(self)
+            elif self.state == self.OVER:
+                self.screen.blit(self.bg_img, self.screen.get_rect())
             # 刷新界面
             pygame.display.flip()
 

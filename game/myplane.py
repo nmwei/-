@@ -40,3 +40,15 @@ class MyPlane(Plane):
             self.screen.blit(self.images[0], self.rect)
         else:
             self.screen.blit(self.images[1], self.rect)
+        # 碰撞检测
+        targets = pygame.sprite.spritecollide(self, war.enemies, False)
+        if targets:
+            self.hurt(war)
+
+    def destroy(self, war):
+        super().destroy(war)
+        # 清空敌机
+        war.enemies.empty()
+        # 修改游戏状态
+        war.state = war.OVER
+

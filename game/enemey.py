@@ -27,8 +27,15 @@ class SmallEnemyPlane(Plane):
             self.init_rect()
         self.screen.blit(self.images[0], self.rect)
 
-    def destroy(self):
-        super().destroy()
+    def destroy(self, war):
+        """ 坠毁 """
+        super().destroy(war)
+        self.reset()
+        war.add_score(self.blood * 10)
+
+    def reset(self):
+        """ 复用 """
         self.active = True
+        self.blood = 1
         self.init_rect()
 
