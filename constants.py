@@ -58,5 +58,40 @@ SMALL_ENEMY_DESTROY_IMG_LIST = [
 # 坠毁音效
 SMALL_ENEMY_PLANE_DOWN_SOUND = os.path.join(ASSETS_DIR, 'sounds/enemy1_down.wav')
 
+# 中型敌机照片及音效
+MIDDLE_ENEMY_PLANE_IMG_LIST = [
+    os.path.join(ASSETS_DIR, 'images/enemy2.png')
+]
+MIDDLE_ENEMY_PLANE_HIT_IMG_LIST = [
+    os.path.join(ASSETS_DIR, 'images/enemy2_hit.png')
+]
+MIDDLE_ENEMY_DESTROY_IMG_LIST = [
+    os.path.join(ASSETS_DIR, 'images/enemy2_down1.png'),
+    os.path.join(ASSETS_DIR, 'images/enemy2_down2.png'),
+    os.path.join(ASSETS_DIR, 'images/enemy2_down3.png'),
+    os.path.join(ASSETS_DIR, 'images/enemy2_down4.png'),
+]
+# 坠毁音效
+MIDDLE_ENEMY_PLANE_DOWN_SOUND = os.path.join(ASSETS_DIR, 'sounds/enemy2_down.wav')
+
+# 大型敌机照片及音效
+BIG_ENEMY_PLANE_IMG_LIST = [
+    os.path.join(ASSETS_DIR, 'images/enemy3_n1.png'),
+    os.path.join(ASSETS_DIR, 'images/enemy3_n2.png')
+]
+BIG_ENEMY_PLANE_HIT_IMG_LIST = [
+    os.path.join(ASSETS_DIR, 'images/enemy3_hit.png')
+]
+BIG_ENEMY_DESTROY_IMG_LIST = [
+    os.path.join(ASSETS_DIR, 'images/enemy3_down1.png'),
+    os.path.join(ASSETS_DIR, 'images/enemy3_down2.png'),
+    os.path.join(ASSETS_DIR, 'images/enemy3_down3.png'),
+    os.path.join(ASSETS_DIR, 'images/enemy3_down4.png'),
+    os.path.join(ASSETS_DIR, 'images/enemy3_down5.png'),
+    os.path.join(ASSETS_DIR, 'images/enemy3_down6.png')
+]
+# 坠毁音效
+BIG_ENEMY_PLANE_DOWN_SOUND = os.path.join(ASSETS_DIR, 'sounds/enemy2_down.wav')
+
 # 游戏结果存储文件地址
 MAX_SCORE_FILE = os.path.join(BASE_DIR, 'store/result.txt')

@@ -11,10 +11,6 @@ class MyPlane(Plane):
     # 摧毁图片
     destroy_images_src = constants.MY_DESTROY_IMG_LIST
 
-    def __init__(self, screen, speed=10):
-        super().__init__(screen, speed)
-        self.init_rect()
-
     def init_rect(self):
         """ 初始化我的飞机位置 """
         width, height = self.get_screen_size()

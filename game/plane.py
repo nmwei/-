@@ -4,10 +4,14 @@ import pygame
 class Plane(pygame.sprite.Sprite):
     # 飞机图片
     images_src = []
+    # 飞机被击中图片
+    images_hit_src = []
     # 摧毁图片
     destroy_images_src = []
     # 摧毁音效
     destroy_sound_src = None
+    # 飞机最大血量
+    max_blood = 1
 
     def __init__(self, screen, speed=10):
         super().__init__()
@@ -19,6 +23,8 @@ class Plane(pygame.sprite.Sprite):
         self.active = True
         # 飞机图片对象
         self.images = list(map(lambda img: pygame.image.load(img), self.images_src))
+        # 飞机被击中图片对象
+        self.images_hit = list(map(lambda img: pygame.image.load(img), self.images_hit_src))
         # 飞机摧毁图片对象
         self.destroy_images = list(map(lambda img: pygame.image.load(img), self.destroy_images_src))
         # 初始化子弹
@@ -26,13 +32,29 @@ class Plane(pygame.sprite.Sprite):
         # 初始化飞机位置
         self.rect = self.images[0].get_rect()
         # 血量
-        self.blood = 1
+        self.blood = self.max_blood
+        # 是否被击中
+        self.hit = False
+        # 初始化位置信息
+        self.init_rect()
+
+    def init_rect(self):
+        """ 初始化位置信息 """
+        pass
+
+    def reset(self):
+        """ 复用 """
+        self.active = True
+        self.hit = False
+        self.blood = self.max_blood
+        self.init_rect()
 
     def get_screen_size(self):
         return self.screen.get_size()
 
     def hurt(self, war, power=1):
         """ 被伤害 """
+        self.hit = True
         self.blood -= power
         if self.blood <= 0:
             self.destroy(war)  # 坠机

@@ -1,6 +1,8 @@
 import sys, pygame
 import constants
-from game.enemey import SmallEnemyPlane
+from game.bigenemeyplane import BigEnemyPlane
+from game.middleenemeyplane import MiddleEnemyPlane
+from game.smallenemey import SmallEnemyPlane
 from game.myplane import MyPlane
 from store.result import PlayResult
 
@@ -48,7 +50,12 @@ class War(object):
         self.result = PlayResult()
 
     def add_score(self, count):
+        """ 添加分数 """
         self.result.score += count
+
+    def set_score(self, score):
+        """ 设置分数 """
+        self.result.score = score
 
     def start(self):
         """ 开始游戏 """
@@ -61,10 +68,26 @@ class War(object):
         # 循环渲染
         self.update()
 
+    def add_enemy(self):
+        """ 添加敌机 """
+        self.add_small_enemy(6)
+        self.add_middle_enemy(4)
+        self.add_big_enemy(2)
+
     def add_small_enemy(self, num):
         """ 添加小型敌机 """
         for i in range(num):
             self.enemies.add(SmallEnemyPlane(self.screen, 10))
+
+    def add_middle_enemy(self, num):
+        """ 添加中型敌机 """
+        for i in range(num):
+            self.enemies.add(MiddleEnemyPlane(self.screen, 15))
+
+    def add_big_enemy(self, num):
+        """ 添加大型敌机 """
+        for i in range(num):
+            self.enemies.add(BigEnemyPlane(self.screen, 20))
 
     def bind_event(self):
         """ 事件监听 """
@@ -81,12 +104,17 @@ class War(object):
             # 与游戏状态有关事件
             if self.state == self.READY:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.state = self.PLAYING
-                    self.add_small_enemy(6)
-                    self.plane.init_rect()  # 重置我的飞机位置
+                    self.reset()
             elif self.state == self.OVER:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self.state = self.READY
+
+    def reset(self):
+        """ 重置游戏 """
+        self.state = self.PLAYING
+        self.add_enemy()  # 添加敌机
+        self.plane.reset()  # 复活我的飞机
+        self.set_score(0)  # 设置分数为0
 
     def update(self):
         """ 游戏循环 """
@@ -124,6 +152,7 @@ class War(object):
 
     @property
     def title_rect(self):
+        """ 标题位置 """
         rect = self.title_img.get_rect()
         width, height = self.screen.get_size()
         rect.centerx = int(width / 2)
@@ -132,6 +161,7 @@ class War(object):
 
     @property
     def start_rect(self):
+        """ 开始按钮位置 """
         rect = self.start_img.get_rect()
         width, height = self.screen.get_size()
         rect.centerx = int(width / 2)
@@ -145,7 +175,7 @@ class War(object):
             self.times = 0
 
     def blit_score(self):
-        """绘制游戏运行时得分"""
+        """ 绘制游戏运行时得分 """
         score_text = self.font.render(
             "得分: {}".format(self.result.score),
             False,
