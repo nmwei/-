@@ -35,7 +35,8 @@ class Plane(pygame.sprite.Sprite):
         """ 被伤害 """
         self.blood -= power
         if self.blood <= 0:
-            self.destroy(war)
+            self.destroy(war)  # 坠机
+            war.result.set_history()  # 记录最高分
 
     def destroy(self, war):
         """ 坠机 """

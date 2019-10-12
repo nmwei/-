@@ -51,3 +51,4 @@ class Bullet(pygame.sprite.Sprite):
             target.hurt(war, self.power)
 
 
+
