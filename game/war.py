@@ -27,7 +27,7 @@ class War(object):
         """ 背景音乐 """
         pygame.mixer.music.load(constants.BG_MUSIC)
         # 设置音量
-        pygame.mixer.music.set_volume(0)
+        pygame.mixer.music.set_volume(0.2)
         # 循环播放
         pygame.mixer.music.play(-1)
 
@@ -83,6 +83,7 @@ class War(object):
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self.state = self.PLAYING
                     self.add_small_enemy(6)
+                    self.plane.init_rect()  # 重置我的飞机位置
             elif self.state == self.OVER:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self.state = self.READY
