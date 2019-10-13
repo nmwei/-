@@ -45,6 +45,9 @@ class MyPlane(Plane):
         super().destroy(war)
         # 清空敌机
         war.enemies.empty()
+        war.small_enemies.empty()
+        war.middle_enemies.empty()
+        war.big_enemies.empty()
         # 修改游戏状态
         war.state = war.OVER
 

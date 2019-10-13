@@ -27,4 +27,7 @@ class EnemyPlane(Plane):
         """ 坠毁 """
         super().destroy(war)
         self.reset()
+        # 得分
         war.add_score(self.blood * 10)
+        # 添加敌机
+        war.add_enemy()

@@ -42,6 +42,9 @@ class War(object):
         self.plane = MyPlane(self.screen, 20)
         # 敌机
         self.enemies = pygame.sprite.Group()
+        self.small_enemies = pygame.sprite.Group()
+        self.middle_enemies = pygame.sprite.Group()
+        self.big_enemies = pygame.sprite.Group()
         # 计数器
         self.times = 0
         # 按下的键盘
@@ -70,24 +73,39 @@ class War(object):
 
     def add_enemy(self):
         """ 添加敌机 """
-        self.add_small_enemy(6)
-        self.add_middle_enemy(4)
-        self.add_big_enemy(2)
+        score = self.result.score
+        # 300 = 30 * 13，大中小型飞机比例为9 : 3 : 1
+        integer = score // 390
+        remainder = score % 390 // 30
+        target_small_len = integer * 9
+        target_middle_len = integer * 3
+        target_big_len = integer * 1
+        target_small_len += min(9, remainder)  # 余数里添加1-6台小型敌机
+        target_middle_len += max(0, remainder - 9)  # 余数里剩下的为中型敌机
+        self.add_small_enemy(max(target_small_len, 5) - len(self.small_enemies))
+        self.add_middle_enemy(target_middle_len - len(self.middle_enemies))
+        self.add_big_enemy(target_big_len - len(self.big_enemies))
 
     def add_small_enemy(self, num):
         """ 添加小型敌机 """
-        for i in range(num):
-            self.enemies.add(SmallEnemyPlane(self.screen, 10))
+        if num > 0:
+            for i in range(num):
+                small_enemy = SmallEnemyPlane(self.screen, 10)
+                small_enemy.add(self.enemies, self.small_enemies)
 
     def add_middle_enemy(self, num):
         """ 添加中型敌机 """
-        for i in range(num):
-            self.enemies.add(MiddleEnemyPlane(self.screen, 15))
+        if num > 0:
+            for i in range(num):
+                middle_enemy = MiddleEnemyPlane(self.screen, 13)
+                middle_enemy.add(self.enemies, self.middle_enemies)
 
     def add_big_enemy(self, num):
         """ 添加大型敌机 """
-        for i in range(num):
-            self.enemies.add(BigEnemyPlane(self.screen, 20))
+        if num > 0:
+            for i in range(num):
+                big_enemy = BigEnemyPlane(self.screen, 16)
+                big_enemy.add(self.enemies, self.big_enemies)
 
     def bind_event(self):
         """ 事件监听 """
@@ -112,9 +130,9 @@ class War(object):
     def reset(self):
         """ 重置游戏 """
         self.state = self.PLAYING
-        self.add_enemy()  # 添加敌机
-        self.plane.reset()  # 复活我的飞机
         self.set_score(0)  # 设置分数为0
+        self.plane.reset()  # 复活我的飞机
+        self.add_enemy()  # 添加敌机
 
     def update(self):
         """ 游戏循环 """
